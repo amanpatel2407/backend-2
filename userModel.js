@@ -21,6 +21,10 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  bankName: {  // Added bankName field
+    type: String,
+    required: true
+  },
   otp: {  // Updated to array of strings
     type: [String],
     required: false

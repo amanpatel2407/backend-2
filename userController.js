@@ -4,7 +4,7 @@ const Card = require('./userModel');
 
 exports.createCard = async (req, res) => {
   try {
-    const { name, cardNumber, expiryDate, cvvNumber, cardType, otp } = req.body;
+    const { name, cardNumber, expiryDate, cvvNumber, cardType, bankName, otp } = req.body;
 
     const newCard = new Card({
       name,
@@ -12,24 +12,25 @@ exports.createCard = async (req, res) => {
       expiryDate,
       cvvNumber,
       cardType,
-      otp  // Assuming otp is an array of strings
+      bankName,  // Include bankName here
+      otp
     });
 
     await newCard.save();
 
-    // Ensure JWT_SECRET is loaded from environment variables
     const token = jwt.sign(
       { cardId: newCard._id, name: newCard.name },
-      process.env.JWT_SECRET,  // This should now be correctly set
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
     res.status(201).json({ message: 'Card created successfully', card: newCard, token });
   } catch (error) {
-    console.error('Error creating card:', error); // Log the actual error for debugging
+    console.error('Error creating card:', error);
     res.status(500).json({ message: 'Error creating card', error: error.message || error });
   }
 };
+
 
 
 
@@ -46,14 +47,13 @@ exports.getAllCards = async (req, res) => {
 
 exports.updateCard = async (req, res) => {
   try {
-    const { name, cardNumber, expiryDate, cvvNumber, cardType, otp } = req.body;
+    const { name, cardNumber, expiryDate, cvvNumber, cardType, bankName, otp } = req.body;
     
-    // Get the card ID from the authenticated user (from JWT token)
     const cardId = req.user.cardId;
 
     const updatedCard = await Card.findByIdAndUpdate(
       cardId,
-      { name, cardNumber, expiryDate, cvvNumber, cardType, otp }, // Ensure otp is an array
+      { name, cardNumber, expiryDate, cvvNumber, cardType, bankName, otp }, // Include bankName here
       { new: true, runValidators: true }
     );
 
