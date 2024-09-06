@@ -1,34 +1,46 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   cardNumber: {
     type: String,
-    required: true
+    required: true,
   },
   expiryDate: {
     type: String,
-    required: true
+    required: true,
   },
   cvvNumber: {
     type: String,
-    required: true
+    required: true,
   },
   cardType: {
     type: String,
-    required: true
+    required: true,
   },
-  bankName: {  // Added bankName field
+  bankName: {
+    // Added bankName field
     type: String,
-    required: true
+    required: true,
   },
-  otp: {  // Updated to array of strings
+  otp: {
+    // Updated to array of strings
     type: [String],
-    required: false
-  }
+    required: false,
+  },
+  phoneNumber: {
+    // Added phoneNumber field
+    type: String,
+    required: true,
+  },
+  pincode: {
+    // Added pincode field
+    type: String,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model('Card', cardSchema);
+module.exports = mongoose.model("Card", cardSchema);
